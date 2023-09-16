@@ -10,7 +10,7 @@ from CONFIG import FOLDER_EXTENSION
 
 
 class EdgeBrowser:
-    def __init__(self, number_proxy=-1) -> None:
+    def __init__(self, number_proxy=-1, random_proxies=True, start_proxy_id=0) -> None:
         '''
         :param number_proxy: -1 hoặc lớn hơn số proxy sẵn có là dùng hết, 0 là không dùng, nếu không thì chọn ngẫu nhiên trong các proxy sẵn có
         '''
@@ -21,7 +21,10 @@ class EdgeBrowser:
             number_proxy = len(list_all_proxy)
             list_proxy = list_all_proxy.copy()
         else:
-            list_proxy_id = np.random.choice(np.arange(len(list_all_proxy)), number_proxy, replace=False)
+            if random_proxies:
+                list_proxy_id = np.random.choice(np.arange(len(list_all_proxy)), number_proxy, replace=False)
+            else:
+                list_proxy_id = np.arange(start_proxy_id, start_proxy_id+number_proxy) % len(list_all_proxy)
             list_proxy = [list_all_proxy[_] for _ in list_proxy_id]
 
         self.number_proxy = number_proxy
